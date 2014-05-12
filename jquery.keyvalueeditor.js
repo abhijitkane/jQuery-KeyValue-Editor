@@ -39,6 +39,11 @@
 
                     $(this).data('keyvalueeditor', data);
                 }
+
+                $(this).find("#keyvalueeditor-form-div").sortable({ stop: function( event, ui ) {
+                    var currentFormFields = methods.getValues($(event.target));
+                    $(event.target).parent().find("#keyvalueeditor-textarea").val( methods.settings.formToTextFunction(currentFormFields) );
+                }});
             });
         },
 
@@ -53,7 +58,7 @@
 
             var h;
             h = '<div class="keyvalueeditor-row keyvalueeditor-last">';
-            h += '<input tabindex="-1" type="checkbox" class="keyvalueeditor-rowcheck" checked="checked">  ';
+            h += '<span tabindex="-1" class="dragger ui-icon ui-icon-arrowthick-2-n-s"></span><input tabindex="-1" type="checkbox" class="keyvalueeditor-rowcheck" checked="checked">  ';
             h += '<input type="text" class="keyvalueeditor-key" placeHolder="' + pKey
                 + '" name="keyvalueeditor-key"'
                 + '"/>';
@@ -90,7 +95,7 @@
             var h;
 
             h = '<div class="keyvalueeditor-row">';
-            h += '<input tabindex="-1" type="checkbox" class="keyvalueeditor-rowcheck" checked="checked">  ';
+            h += '<span tabindex="-1" class="dragger ui-icon ui-icon-arrowthick-2-n-s"></span><input tabindex="-1" type="checkbox" class="keyvalueeditor-rowcheck" checked="checked">  ';
             h += '<input type="text" class="keyvalueeditor-key" placeHolder="' + pKey
                 + '" name="keyvalueeditor-' + key
                 + '" value="' + key + '"';
@@ -164,7 +169,7 @@
             data.settings.onDeleteRow();
 
             var currentFormFields = methods.getValues(parentDiv);
-            $("#keyvalueeditor-textarea").val( methods.settings.formToTextFunction(currentFormFields) );
+            parentDiv.parent().find("#keyvalueeditor-textarea").val( methods.settings.formToTextFunction(currentFormFields) );
         },
 
         getToggleLink:function(state) {
@@ -172,8 +177,8 @@
         },
 
         toggleRowHandler:function (event) {
-            $("#keyvalueeditor-textarea-div").toggle();
-            $("#keyvalueeditor-form-div").toggle();
+            $(this).parent().children("#keyvalueeditor-textarea-div").toggle();
+            $(this).parent().children("#keyvalueeditor-form-div").toggle();
         },
 
         valueTypeSelectEventHandler:function (event) {
@@ -218,7 +223,7 @@
 
             var parentDiv = $(this).parent().parent();
             var currentFormFields = methods.getValues(parentDiv);
-            $("#keyvalueeditor-textarea").val( methods.settings.formToTextFunction(currentFormFields) );
+            parentDiv.parent().find("#keyvalueeditor-textarea").val( methods.settings.formToTextFunction(currentFormFields) );
 
         },
 
@@ -334,7 +339,7 @@
             $(state.editor).find('.keyvalueeditor-row').each(function () {
                 $(this).remove();
             });
-            $("#keyvalueeditor-form-div").val("");
+            $(state.editor).find("#keyvalueeditor-form-div").val("");
             if (state.settings.editableKeys) {
                 var h = methods.getLastRow(state);
                 $(state.editor).find("#keyvalueeditor-form-div").append(h);
