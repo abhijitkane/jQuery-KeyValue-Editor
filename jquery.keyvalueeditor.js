@@ -42,7 +42,7 @@
 
                 $(this).find("#keyvalueeditor-form-div").sortable({ stop: function( event, ui ) {
                     var currentFormFields = methods.getValues($(event.target));
-                    $(event.target).parent().find("#keyvalueeditor-textarea").val( methods.settings.formToTextFunction(currentFormFields) );
+                    $(event.target).parent().find("#keyvalueeditor-textarea").val( methods.settings.formToTextFunction(currentFormFields));
                 }});
             });
         },
